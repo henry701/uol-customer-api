@@ -1,4 +1,4 @@
-package br.com.henry.selective.uol.customer.rest;
+package br.com.henry.selective.uol.customer.rest.controller;
 
 import br.com.henry.selective.uol.customer.model.Customer;
 import br.com.henry.selective.uol.customer.repository.CustomerRepository;
@@ -26,7 +26,7 @@ public class CustomerController {
     @PostMapping(value = "/customer", consumes = MediaType.APPLICATION_JSON_VALUE, name = "create-customer", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Customer> create(@Valid @RequestBody Customer customer) {
         customer.setId(null);
-        // TODO: Aggregate infos from the two APIs
+        // TODO: Aggregate infos from the two other APIs
         customer = customerRepository.save(customer);
         return ResponseEntity.ok().body(customer);
     }
@@ -53,7 +53,7 @@ public class CustomerController {
         return customerRepository.findById(id)
             .map(customer -> {
                 customerRepository.deleteById(id);
-                return ResponseEntity.ok(customerRepository.save(customer));
+                return ResponseEntity.ok(customer);
             })
             .orElseGet(() -> ResponseEntity.notFound().build());
     }
