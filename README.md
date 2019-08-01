@@ -1,7 +1,8 @@
 # uol-customer-api
 
+**TODO: Introdução**
 
-## TODOs
+## Funcionalidades
 
 - Criar um Cliente
     - Consulta à API aberta de geolocalização por IP https://www.ipvigilante.com/
@@ -15,16 +16,45 @@
 
 ## Como Usar
 
-**TODO**
+**TODO: Swagger descrevendo a API**
+
+Também podem ser encontrados exemplos de uso da API
+de acordo com a coleção do [Postman](https://www.getpostman.com) localizada na raíz
+deste repositório: `postman_collection.json`
 
 ## Ferramentas Utilizadas
 
-**TODO**
+- Java 8
+- Spring Boot
+- PostgreSQL
+- Docker
+- Docker Compose
 
 ## Requisitos de Infraestrutura
 
-**TODO**
+- Sistema operacional Windows ou baseado em Linux
+- Docker e Docker Compose instalados
+    - As versões utilizadas durante o desenvolvimento foram as seguintes:
+        - Docker Desktop (apenas Windows): v2.1.0.0 (36874)
+        - Docker Engine: v19.03.1
+        - Docker Compose: 1.24.1
+
+### Apenas para Desenvolvimento
+
+Para compilar o programa é necessário possuir, no mínimo, o Maven e uma JDK 8.
 
 ## Instruções de Deploy
 
-**TODO**
+Para compilar o programa:
+```bash
+mvn clean install
+```
+
+Para rodar o programa, após compilação:
+```
+docker-compose up --build
+```
+
+### Deploy em Produção
+
+**TODO: Gerar ZIP utilizando plugin do Maven**

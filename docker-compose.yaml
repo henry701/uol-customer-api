@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+
+  redis:
+    image: redis:5.0.5-alpine
+    restart: always
+    volumes:
+      - /data
+
+  postgres:
+    image: postgres:11.4-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres@123
+
+  customerapi:
+    build:
+      context: .
+      dockerfile: ./DOCKERFILE
+    ports:
+      - "8085:8085"
+    restart: always
