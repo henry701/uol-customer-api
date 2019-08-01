@@ -23,4 +23,4 @@ services:
     depends_on:
       - postgres
       - redis
-    restart: no
+    restart: "no"

@@ -1,6 +1,6 @@
 # uol-customer-api
 
-**TODO: Introdução**
+API REST desenvolvida como teste técnico para processo seletivo na UOL.
 
 ## Funcionalidades
 
@@ -20,9 +20,13 @@
 
 **TODO: Swagger descrevendo a API**
 
+Para descrever a API foi criado um arquivo no formato OpenAPI 3.0 que pode
+ser lido por diversas ferramentas que geram documentação, como [essas aqui](https://openapi.tools/#documentation).
+Ele pode ser encontrado no arquivo `openapi-uol-customer-api.yaml` na raiz desse repositório.
+
 Também podem ser encontrados exemplos de uso da API
 de acordo com a coleção do [Postman](https://www.getpostman.com) localizada na raíz
-deste repositório: `postman_collection.json`
+deste repositório: `postman_collection.json`.
 
 ## Ferramentas Utilizadas
 
@@ -42,7 +46,10 @@ deste repositório: `postman_collection.json`
     principalmente o de desenvolvimento
 - Docker Compose
     - Utilizado pois como a aplicação envolve banco de dados e também cache
-    da requisições de consulta, mais de um container é necessário
+    da requisições de consulta, mais de um container é necessário para o funcionamento do sistema
+- JUnit
+    - Padrão de fato para testes unitários no Java, e possui boa integração
+    com os frameworks existentes (como o Spring Boot, por exemplo, que tem seu próprio Runner de testes)
 
 ## Requisitos de Infraestrutura
 
@@ -59,18 +66,46 @@ Para compilar o programa é necessário possuir, no mínimo:
 - Maven 3.0
 - JDK 8.0
 
+## Configuração
+
+No arquivo `application.properties` localizado na raíz do ZIP e na pasta `src/main/resources` deste projeto,
+é possível alterar o endereço e as credenciais do banco de dados, 
+além da porta de exposição da API, entre outras configurações da aplicação.
+
 ## Instruções de Deploy
+
+### Deploy para Desenvolvimento utilizando Docker
 
 Para compilar o programa:
 ```bash
 mvn clean install
 ```
 
-Para rodar o programa, após a compilação:
+Para rodar o programa:
 ```bash
-docker-compose up --build
+mvn exec exec:docker
 ```
 
 ### Deploy em Produção
 
-**TODO: Gerar ZIP utilizando plugin do Maven**
+#### Deploy utilizando Docker
+
+Após a compilação, é gerado um ZIP com os artefatos e dependências
+do programa na pasta target, cujo nome segue o formato `uol-customer-api-`**`VERSÃO`**`.zip`.
+
+Para realizar o deploy em produção, basta extrair o ZIP na máquina alvo
+e executar:
+```bash
+docker-compose up --build
+```
+Na pasta onde foi extraído o ZIP.
+
+#### Deploy sem Docker
+
+Caso a máquina de produção não possua o Docker instalado, também é possível
+rodar a aplicação em modo standalone, contanto que ela possua uma instância do
+BD Postgres rodando e, opcionalmente, uma do Redis para realizar o cache, rodando o comando:
+```bash
+java -cp "app:app/lib/*" "br.com.henry.selective.uol.customer.Application"
+```
+Na raíz da estrutura do arquivo ZIP, após sua extração.
