@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAutoConfiguration
 @ComponentScan(basePackages={"br.com.henry.selective.uol.customer"})
 @EnableJpaRepositories(basePackages="br.com.henry.selective.uol.customer.repository")
-@EntityScan(basePackages="br.com.henry.selective.uol.customer.model")
+@EntityScan(basePackages = "br.com.henry.selective.uol.customer.model.entity")
 @EnableTransactionManagement
 public class Application {
     public static void main(String[] args) {

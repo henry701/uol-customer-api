@@ -1,7 +1,10 @@
 <component name="ProjectDictionaryState">
   <dictionary name="henry">
     <words>
+      <w>appenders</w>
+      <w>datasource</w>
       <w>entrypoint</w>
+      <w>jdbc</w>
     </words>
   </dictionary>
 </component>

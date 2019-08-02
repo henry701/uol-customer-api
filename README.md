@@ -5,14 +5,15 @@ API REST desenvolvida como teste técnico para processo seletivo na UOL.
 ## Funcionalidades
 
 - **OK** Criar Cliente
-    - **TODO** Consulta à [API aberta de geolocalização por IP](https://www.ipvigilante.com/) 
-    - **TODO** Consulta à [API de clima por geolocalização](https://www.metaweather.com/api/)
-        - **TODO** Ao executar a busca de clima por geolocalização, caso não exista a cidade especifica de origem, é utilizado o resultado mais próximo.
-        - **TODO** Ao criar um cliente, apenas para fins estatísticos e históricos, é buscada a localização geográfica de quem executou a requisição, usando o IP de origem.
+    - **OK** Consulta à [API aberta de geolocalização por IP](https://www.ipvigilante.com/) 
+    - **OK** Consulta à [API de clima por geolocalização](https://www.metaweather.com/api/)
+        - **OK** Ao executar a busca de clima por geolocalização, caso não exista a cidade especifica de origem, é utilizado o resultado mais próximo.
+        - **OK** Ao criar um cliente, apenas para fins estatísticos e históricos, é buscada a localização geográfica de quem executou a requisição, usando o IP de origem.
         Com a localização geográfica, é consultada a temperatura máxima e mínima do dia da requisição de criação no local do IP de origem.
         A informação é salva e a associada ao cliente resultado da requisição de origem.
-- **TODO** Alterar um Cliente
+- **OK** Alterar um Cliente
 - **OK** Consultar um Cliente por id
+    - **TODO** Caching dos clientes consultados, por ID, com invalidação ao update/delete, utilizando Redis
 - **OK** Listar todos os Clientes salvos
 - **OK** Remover Cliente por id
 
@@ -33,7 +34,7 @@ deste repositório: `postman_collection.json`.
 - Java 8
     - Versão comercial mais estável do Java,
     escolhi por segurança visto que muitos frameworks ainda
-    não se adaptaram a modularidade exigida pelo Java 11.
+    não se adaptaram a modularidade exigida pelo Java 11
 - Spring Boot
     - Utilizado pois é a tecnologia usada na UOL. Me surpreendeu positivamente
     com a quantidade de coisas que traz prontas :)
@@ -50,6 +51,9 @@ deste repositório: `postman_collection.json`.
 - JUnit
     - Padrão de fato para testes unitários no Java, e possui boa integração
     com os frameworks existentes (como o Spring Boot, por exemplo, que tem seu próprio Runner de testes)
+- Logback
+    - Framework de logging que vem integrado por padrão no Spring,
+    com poucas diferenças do Log4j2 que estou acostumado
 
 ## Requisitos de Infraestrutura
 
@@ -83,8 +87,23 @@ mvn clean install
 
 Para rodar o programa:
 ```bash
-mvn exec exec:docker
+mvn exec exec:docker-up
 ```
+
+Para parar o programa:
+```bash
+mvn exec exec:docker-stop
+```
+
+#### Troubleshooting
+
+Caso haja problemas com as imagens após alterar a estrutura do banco de dados ou alguma
+outra alteração de alto impacto, execute:
+```bash
+mvn exec exec:docker-down
+```
+***Aviso: Isso deleta todos os containers do sistema, apenas executar em DEV
+pois acarreta em limpeza completa do banco de dados!***
 
 ### Deploy em Produção
 
@@ -106,6 +125,6 @@ Caso a máquina de produção não possua o Docker instalado, também é possív
 rodar a aplicação em modo standalone, contanto que ela possua uma instância do
 BD Postgres rodando e, opcionalmente, uma do Redis para realizar o cache, rodando o comando:
 ```bash
-java -cp "app:app/lib/*" "br.com.henry.selective.uol.customer.Application"
+java -Dlogback.configurationFile=app/logback-spring.xml -cp "app:app/lib/*" "br.com.henry.selective.uol.customer.Application"
 ```
 Na raíz da estrutura do arquivo ZIP, após sua extração.

@@ -1,4 +1,4 @@
-package br.com.henry.selective.uol.customer.model;
+package br.com.henry.selective.uol.customer.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +9,12 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-@Data
 @Entity
+@Table(name = "customers")
+@DynamicUpdate
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@DynamicUpdate
-@Table(name = "customers")
 public class Customer {
 
     @Id
@@ -28,6 +28,17 @@ public class Customer {
 
     @NotNull(message = "Age is mandatory")
     @Max(180)
+    @Min(1)
     private Integer age;
+
+    @Nullable
+    @OneToOne(cascade = CascadeType.ALL)
+    @MapsId
+    private LocationData location;
+
+    @Nullable
+    @OneToOne(cascade = CascadeType.ALL)
+    @MapsId
+    private ClimateData climate;
 
 }
