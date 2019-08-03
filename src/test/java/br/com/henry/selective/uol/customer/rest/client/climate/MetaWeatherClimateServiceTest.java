@@ -7,9 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,7 +28,6 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
 @ContextConfiguration(classes = MetaWeatherClimateServiceTest.TestConfig.class)
 public class MetaWeatherClimateServiceTest {
 
@@ -98,7 +95,6 @@ public class MetaWeatherClimateServiceTest {
 
     }
 
-    @Configuration
     static class TestConfig {
         @Bean
         public RestTemplate restTemplate() {

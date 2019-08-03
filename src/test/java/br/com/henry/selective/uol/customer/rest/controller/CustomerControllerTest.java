@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -30,9 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SuppressWarnings("ResultOfMethodCallIgnored")
 @RunWith(SpringRunner.class)
-@AutoConfigureMockMvc
 @WebMvcTest(CustomerController.class)
 public class CustomerControllerTest {
 
@@ -47,6 +44,8 @@ public class CustomerControllerTest {
 
     @MockBean
     private CustomerRepository customerRepository;
+
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Test
     public void testCustomerCreation() throws Exception {
@@ -66,7 +65,7 @@ public class CustomerControllerTest {
         customerCreation.setAge(15);
 
         this.mockMvc.perform(post("/customer")
-            .content(new ObjectMapper().writeValueAsString(customerCreation))
+            .content(mapper.writeValueAsString(customerCreation))
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .accept(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
@@ -152,7 +151,7 @@ public class CustomerControllerTest {
         when(customerRepository.save(any())).then(c -> c.getArgument(0));
 
         this.mockMvc.perform(patch("/customer")
-            .content(new ObjectMapper().writeValueAsString(customerUpdate))
+            .content(mapper.writeValueAsString(customerUpdate))
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .accept(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
