@@ -33,12 +33,10 @@ public class Customer {
 
     @Nullable
     @OneToOne(cascade = CascadeType.ALL)
-    @MapsId
     private LocationData location;
 
     @Nullable
     @OneToOne(cascade = CascadeType.ALL)
-    @MapsId
     private ClimateData climate;
 
 }

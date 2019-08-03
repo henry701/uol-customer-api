@@ -54,6 +54,9 @@ deste repositório: `postman_collection.json`.
 - Logback
     - Framework de logging que vem integrado por padrão no Spring,
     com poucas diferenças do Log4j2 que estou acostumado
+- Redis
+    - Para realizar caching de entidades sem colocar pressão no Garbage Collector,
+    e porque é um programa de caching robusto dedicado
 
 ## Requisitos de Infraestrutura
 
