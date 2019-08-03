@@ -1,11 +1,9 @@
 # TODOs
 
 - Testes Unitários
-    - Controller
+    - **OK** Controller
     - Serviço IpVigilante
-        - Intejar mock de RestTemplate
     - Serviço MetaWeather
-        - Intejar mock de RestTemplate
 
 - Testes de Integração
     - Controller
