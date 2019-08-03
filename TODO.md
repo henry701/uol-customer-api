@@ -3,7 +3,7 @@
 - Testes Unitários
     - **OK** Controller
     - Serviço IpVigilante
-    - Serviço MetaWeather
+    - **OK** Serviço MetaWeather
 
 - Testes de Integração
     - Controller
