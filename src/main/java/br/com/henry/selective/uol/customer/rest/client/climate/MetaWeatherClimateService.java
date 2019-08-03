@@ -17,8 +17,8 @@ import java.util.*;
 @Slf4j
 public class MetaWeatherClimateService implements ClimateService {
 
-    private static final String LOCATION_URI_TEMPLATE = "https://www.metaweather.com/api/location/search/?lattlong={lat},{lng}";
-    private static final String CLIMATE_URI_TEMPLATE = "https://www.metaweather.com/apilocation/{woeid}/";
+    static final String LOCATION_URI_TEMPLATE = "https://www.metaweather.com/api/location/search/?lattlong={lat},{lng}";
+    static final String CLIMATE_URI_TEMPLATE = "https://www.metaweather.com/apilocation/{woeid}/";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -41,7 +41,11 @@ public class MetaWeatherClimateService implements ClimateService {
     }
 
     private ClimateData retrieveClimateData(LocationResponse.LocationResponseData locationResponseData) {
-        ClimateResponse climateResponse = restTemplate.getForObject(CLIMATE_URI_TEMPLATE, ClimateResponse.class, Collections.singletonMap("woeid", locationResponseData.woeid));
+        return getClimateDataByWoeId(locationResponseData.woeid);
+    }
+
+    public ClimateData getClimateDataByWoeId(Long woeid) {
+        ClimateResponse climateResponse = restTemplate.getForObject(CLIMATE_URI_TEMPLATE, ClimateResponse.class, Collections.singletonMap("woeid", woeid));
         if (climateResponse == null || climateResponse.consolidated_weather == null || climateResponse.consolidated_weather.isEmpty()) {
             return null;
         }
@@ -62,13 +66,13 @@ public class MetaWeatherClimateService implements ClimateService {
         return climateData;
     }
 
-    private static class LocationResponse extends ArrayList<LocationResponse.LocationResponseData> {
+    static class LocationResponse extends ArrayList<LocationResponse.LocationResponseData> {
 
         @Data
         @AllArgsConstructor
         @NoArgsConstructor
         @SuppressWarnings("squid:S00116")
-        private static class LocationResponseData {
+        static class LocationResponseData {
             private Long distance;
             private String title;
             private String location_type;
@@ -82,7 +86,7 @@ public class MetaWeatherClimateService implements ClimateService {
     @AllArgsConstructor
     @NoArgsConstructor
     @SuppressWarnings("squid:S00116")
-    private static class ClimateResponse {
+    static class ClimateResponse {
 
         private List<ConsolidatedWeather> consolidated_weather;
 
@@ -90,7 +94,7 @@ public class MetaWeatherClimateService implements ClimateService {
         @AllArgsConstructor
         @NoArgsConstructor
         @SuppressWarnings("squid:S00116")
-        private static class ConsolidatedWeather {
+        static class ConsolidatedWeather {
             private BigDecimal min_temp;
             private BigDecimal max_temp;
         }

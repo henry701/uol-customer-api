@@ -5,6 +5,7 @@
       <w>datasource</w>
       <w>entrypoint</w>
       <w>jdbc</w>
+      <w>woeid</w>
     </words>
   </dictionary>
 </component>
