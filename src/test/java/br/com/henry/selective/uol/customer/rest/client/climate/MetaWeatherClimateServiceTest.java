@@ -31,7 +31,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ContextConfiguration(classes = MetaWeatherClimateServiceTest.MetaWeatherClimateServiceTestConfig.class)
+@ContextConfiguration(classes = MetaWeatherClimateServiceTest.TestConfig.class)
 public class MetaWeatherClimateServiceTest {
 
     @Autowired
@@ -91,20 +91,19 @@ public class MetaWeatherClimateServiceTest {
 
         ClimateData climateData = metaWeatherClimateService.getClimateForLocation(latitude, longitude);
 
+        mockServer.verify();
+
         Assert.assertEquals(climateData.getMaximumTemperature(), consolidatedWeather.getMax_temp());
         Assert.assertEquals(climateData.getMinimumTemperature(), consolidatedWeather.getMin_temp());
-
-        mockServer.verify();
 
     }
 
     @Configuration
-    static class MetaWeatherClimateServiceTestConfig {
+    static class TestConfig {
         @Bean
         public RestTemplate restTemplate() {
             return new RestTemplate();
         }
-
         @Bean
         public MetaWeatherClimateService metaWeatherClimateService() {
             return new MetaWeatherClimateService();

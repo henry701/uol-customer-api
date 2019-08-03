@@ -1,10 +1,5 @@
 # TODOs
 
-- Testes Unitários
-    - **OK** Controller
-    - Serviço IpVigilante
-    - **OK** Serviço MetaWeather
-
 - Testes de Integração
     - Controller
         - Cadastrar Customer com IP injetado 8.8.8.8

@@ -16,7 +16,7 @@ import java.util.Collections;
 @Slf4j
 public class IpVigilanteGeoLocalizationService implements GeoLocalizationService {
 
-    private static final String URI_TEMPLATE = "https://ipvigilante.com/json/{ip}/default";
+    static final String URI_TEMPLATE = "https://ipvigilante.com/json/{ip}/default";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -44,7 +44,7 @@ public class IpVigilanteGeoLocalizationService implements GeoLocalizationService
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    private static class LocationResponse {
+    static class LocationResponse {
         private String status;
         private LocationResponseData data;
 
@@ -52,7 +52,7 @@ public class IpVigilanteGeoLocalizationService implements GeoLocalizationService
         @AllArgsConstructor
         @NoArgsConstructor
         @SuppressWarnings("squid:S00116")
-        private static class LocationResponseData {
+        static class LocationResponseData {
             private String continent_name;
             private String country_name;
             private String city_name;
