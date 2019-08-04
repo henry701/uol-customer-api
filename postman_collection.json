@@ -44,9 +44,9 @@
 			"response": []
 		},
 		{
-			"name": "Update Customer",
+          "name": "Wrong Create Customer",
 			"request": {
-				"method": "PATCH",
+              "method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -56,13 +56,13 @@
 					},
 					{
 						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
+                      "type": "text",
+                      "value": "application/json"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"id\": 1,\n\t\"name\": \"Henrique Borsatto de Campos\",\n\t\"age\": 22\n}"
+                  "raw": "{\n\t\"name\": 55,\n\t\"age\": -5,\n\t\"nonField\": \"a\"\n}"
 				},
 				"url": {
 					"raw": "http://127.0.0.1:8085/customer",
@@ -82,9 +82,9 @@
 			"response": []
 		},
 		{
-			"name": "Delete Customer",
+          "name": "List Customers",
 			"request": {
-				"method": "DELETE",
+              "method": "GET",
 				"header": [
 					{
 						"key": "Accept",
@@ -93,7 +93,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://127.0.0.1:8085/customer/1",
+                  "raw": "http://127.0.0.1:8085/customer",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -103,24 +103,33 @@
 					],
 					"port": "8085",
 					"path": [
-						"customer",
-						"1"
+                      "customer"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "List Customers",
+          "name": "Update Customer",
 			"request": {
-				"method": "GET",
+              "method": "PATCH",
 				"header": [
 					{
+                      "key": "Content-Type",
+                      "name": "Content-Type",
+                      "type": "text",
+                      "value": "application/json"
+                    },
+                  {
 						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
 					}
 				],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n\t\"id\": 1,\n\t\"name\": \"Henrique Borsatto de Campos\",\n\t\"age\": 22\n}"
+              },
 				"url": {
 					"raw": "http://127.0.0.1:8085/customer",
 					"protocol": "http",
@@ -139,6 +148,35 @@
 			"response": []
 		},
 		{
+          "name": "Delete Customer",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8085/customer/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8085",
+              "path": [
+                "customer",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+      {
 			"name": "Retrieve Customer by Id",
 			"request": {
 				"method": "GET",
@@ -150,7 +188,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://127.0.0.1:8085/customer?id=1",
+                  "raw": "http://127.0.0.1:8085/customer/1",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -160,13 +198,8 @@
 					],
 					"port": "8085",
 					"path": [
-						"customer"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "1"
-						}
+                      "customer",
+                      "1"
 					]
 				}
 			},

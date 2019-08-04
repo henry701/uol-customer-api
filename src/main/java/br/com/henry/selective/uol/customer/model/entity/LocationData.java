@@ -1,6 +1,5 @@
 package br.com.henry.selective.uol.customer.model.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
@@ -13,7 +12,6 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "locations")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class LocationData {
 

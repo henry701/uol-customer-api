@@ -2,12 +2,12 @@ package br.com.henry.selective.uol.customer.rest.controller;
 
 import br.com.henry.selective.uol.customer.model.dto.CustomerCreation;
 import br.com.henry.selective.uol.customer.model.dto.CustomerUpdate;
-import br.com.henry.selective.uol.customer.model.entity.ClimateData;
 import br.com.henry.selective.uol.customer.model.entity.Customer;
 import br.com.henry.selective.uol.customer.model.entity.LocationData;
 import br.com.henry.selective.uol.customer.repository.CustomerRepository;
 import br.com.henry.selective.uol.customer.rest.client.climate.ClimateService;
 import br.com.henry.selective.uol.customer.rest.client.geolocation.GeoLocalizationService;
+import br.com.henry.selective.uol.customer.test.TestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
@@ -50,7 +50,11 @@ public class CustomerControllerTest {
     @Test
     public void testCustomerCreation() throws Exception {
 
-        when(customerRepository.save(any())).then(c -> c.getArgument(0));
+        when(customerRepository.save(any())).then(c -> {
+            Customer customer = (Customer) c.getArgument(0);
+            customer.setId(1L);
+            return customer;
+        });
 
         BigDecimal lat = BigDecimal.valueOf(15.4d);
         BigDecimal lng = BigDecimal.valueOf(30.5d);
@@ -70,7 +74,12 @@ public class CustomerControllerTest {
             .accept(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.climate").doesNotExist())
+            .andExpect(jsonPath("$.location").doesNotExist())
+            .andExpect(jsonPath("$.age").value(customerCreation.getAge()))
+            .andExpect(jsonPath("$.name").value(customerCreation.getName()))
+            .andExpect(jsonPath("$.id").value(1L));
 
         ArgumentCaptor<Customer> customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
 
@@ -84,26 +93,67 @@ public class CustomerControllerTest {
     }
 
     @Test
+    public void testWrongCustomerCreation() throws Exception {
+
+        CustomerCreation customerCreation = new CustomerCreation();
+        customerCreation.setName("");
+        customerCreation.setAge(-50);
+
+        this.mockMvc.perform(post("/customer")
+            .content(mapper.writeValueAsString(customerCreation))
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .accept(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.climate").doesNotExist())
+            .andExpect(jsonPath("$.location").doesNotExist())
+            .andExpect(jsonPath("$.age").exists())
+            .andExpect(jsonPath("$.name").exists())
+            .andExpect(jsonPath("$.id").doesNotExist());
+
+        verify(climateService, never()).getClimateForLocation(any(), any());
+        verify(customerRepository, never()).save(any());
+    }
+
+    @Test
     public void testCustomerQuery() throws Exception {
 
-        Long id = 5L;
-        Integer age = 15;
-        String name = "Test Name";
+        Customer customer = TestUtils.getStandardTestCustomer();
 
-        Customer customer = getTestCustomer(id, age, name);
+        when(customerRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
 
-        when(customerRepository.findById(id)).thenReturn(Optional.of(customer));
-
-        this.mockMvc.perform(get("/customer/{id}", id)
+        this.mockMvc.perform(get("/customer/{id}", customer.getId())
             .accept(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.climate").doesNotExist())
             .andExpect(jsonPath("$.location").doesNotExist())
-            .andExpect(jsonPath("$.age").value(age))
-            .andExpect(jsonPath("$.name").value(name))
-            .andExpect(jsonPath("$.id").value(id));
+            .andExpect(jsonPath("$.age").value(customer.getAge()))
+            .andExpect(jsonPath("$.name").value(customer.getName()))
+            .andExpect(jsonPath("$.id").value(customer.getId()));
+
+        verify(customerRepository, times(1)).findById(customer.getId());
+        verify(customerRepository, never()).findAll();
+    }
+
+    @Test
+    public void testNotFoundCustomerQuery() throws Exception {
+
+        Long id = 99L;
+
+        when(customerRepository.findById(id)).thenReturn(Optional.empty());
+
+        this.mockMvc.perform(get("/customer/{id}", id)
+            .accept(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.climate").doesNotExist())
+            .andExpect(jsonPath("$.location").doesNotExist())
+            .andExpect(jsonPath("$.age").doesNotExist())
+            .andExpect(jsonPath("$.name").doesNotExist())
+            .andExpect(jsonPath("$.id").doesNotExist());
 
         verify(customerRepository, times(1)).findById(id);
         verify(customerRepository, never()).findAll();
@@ -112,8 +162,8 @@ public class CustomerControllerTest {
     @Test
     public void testCustomerList() throws Exception {
 
-        Customer customer1 = getStandardTestCustomer();
-        Customer customer2 = getStandardTestCustomer();
+        Customer customer1 = TestUtils.getStandardTestCustomer();
+        Customer customer2 = TestUtils.getStandardTestCustomer();
 
         when(customerRepository.findAll()).thenReturn(Arrays.asList(customer1, customer2));
 
@@ -140,7 +190,7 @@ public class CustomerControllerTest {
     @Test
     public void testCustomerPatch() throws Exception {
 
-        Customer customer = getStandardTestCustomer();
+        Customer customer = TestUtils.getStandardTestCustomer();
 
         CustomerUpdate customerUpdate = new CustomerUpdate();
         customerUpdate.setName("Updated Name");
@@ -177,7 +227,7 @@ public class CustomerControllerTest {
     @Test
     public void testCustomerDelete() throws Exception {
 
-        Customer customer = getStandardTestCustomer();
+        Customer customer = TestUtils.getStandardTestCustomer();
 
         when(customerRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
 
@@ -195,25 +245,6 @@ public class CustomerControllerTest {
         verify(customerRepository, times(1)).findById(customer.getId());
         verify(customerRepository, times(1)).deleteById(customer.getId());
         verify(customerRepository, never()).findAll();
-    }
-
-    private Customer getStandardTestCustomer() {
-        Long id = 5L;
-        Integer age = 15;
-        String name = "Test Name";
-        return getTestCustomer(id, age, name);
-    }
-
-    private Customer getTestCustomer(Long id, Integer age, String name) {
-        ClimateData climateData = mock(ClimateData.class);
-        LocationData locationData = mock(LocationData.class);
-        Customer customer = new Customer();
-        customer.setName(name);
-        customer.setAge(age);
-        customer.setId(id);
-        customer.setClimate(climateData);
-        customer.setLocation(locationData);
-        return customer;
     }
 
 }

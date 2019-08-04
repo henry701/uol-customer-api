@@ -1,7 +1,6 @@
 package br.com.henry.selective.uol.customer.rest.client.geolocation;
 
 import br.com.henry.selective.uol.customer.model.entity.LocationData;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,14 +41,12 @@ public class IpVigilanteGeoLocalizationService implements GeoLocalizationService
     }
 
     @Data
-    @AllArgsConstructor
     @NoArgsConstructor
     static class LocationResponse {
         private String status;
         private LocationResponseData data;
 
         @Data
-        @AllArgsConstructor
         @NoArgsConstructor
         @SuppressWarnings("squid:S00116")
         static class LocationResponseData {

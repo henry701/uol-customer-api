@@ -4,22 +4,20 @@ API REST desenvolvida como teste técnico para processo seletivo na UOL.
 
 ## Funcionalidades
 
-- **OK** Criar Cliente
-    - **OK** Consulta à [API aberta de geolocalização por IP](https://www.ipvigilante.com/) 
-    - **OK** Consulta à [API de clima por geolocalização](https://www.metaweather.com/api/)
-        - **OK** Ao executar a busca de clima por geolocalização, caso não exista a cidade especifica de origem, é utilizado o resultado mais próximo.
-        - **OK** Ao criar um cliente, apenas para fins estatísticos e históricos, é buscada a localização geográfica de quem executou a requisição, usando o IP de origem.
+- Criar Cliente
+    - Consulta à [API aberta de geolocalização por IP](https://www.ipvigilante.com/) 
+    - Consulta à [API de clima por geolocalização](https://www.metaweather.com/api/)
+        - Ao executar a busca de clima por geolocalização, caso não exista a cidade especifica de origem, é utilizado o resultado mais próximo.
+        - Ao criar um cliente, apenas para fins estatísticos e históricos, é buscada a localização geográfica de quem executou a requisição, usando o IP de origem.
         Com a localização geográfica, é consultada a temperatura máxima e mínima do dia da requisição de criação no local do IP de origem.
         A informação é salva e a associada ao cliente resultado da requisição de origem.
-- **OK** Alterar um Cliente
-- **OK** Consultar um Cliente por id
-    - **TODO** Caching dos clientes consultados, por ID, com invalidação ao update/delete, utilizando Redis
-- **OK** Listar todos os Clientes salvos
-- **OK** Remover Cliente por id
+- Alterar um Cliente
+- Consultar um Cliente por id
+    - Caching dos clientes consultados, por ID, com invalidação ao update/delete, utilizando Redis
+- Listar todos os Clientes salvos
+- Remover Cliente por id
 
 ## Como Usar
-
-**TODO: Swagger descrevendo a API**
 
 Para descrever a API foi criado um arquivo no formato OpenAPI 3.0 que pode
 ser lido por diversas ferramentas que geram documentação, como [essas aqui](https://openapi.tools/#documentation).

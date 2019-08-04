@@ -1,7 +1,6 @@
 package br.com.henry.selective.uol.customer.rest.client.climate;
 
 import br.com.henry.selective.uol.customer.model.entity.ClimateData;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,7 @@ import java.util.*;
 public class MetaWeatherClimateService implements ClimateService {
 
     static final String LOCATION_URI_TEMPLATE = "https://www.metaweather.com/api/location/search/?lattlong={lat},{lng}";
-    static final String CLIMATE_URI_TEMPLATE = "https://www.metaweather.com/apilocation/{woeid}/";
+    static final String CLIMATE_URI_TEMPLATE = "https://www.metaweather.com/api/location/{woeid}/";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -69,7 +68,6 @@ public class MetaWeatherClimateService implements ClimateService {
     static class LocationResponse extends ArrayList<LocationResponse.LocationResponseData> {
 
         @Data
-        @AllArgsConstructor
         @NoArgsConstructor
         @SuppressWarnings("squid:S00116")
         static class LocationResponseData {
@@ -83,7 +81,6 @@ public class MetaWeatherClimateService implements ClimateService {
     }
 
     @Data
-    @AllArgsConstructor
     @NoArgsConstructor
     @SuppressWarnings("squid:S00116")
     static class ClimateResponse {
@@ -91,7 +88,6 @@ public class MetaWeatherClimateService implements ClimateService {
         private List<ConsolidatedWeather> consolidated_weather;
 
         @Data
-        @AllArgsConstructor
         @NoArgsConstructor
         @SuppressWarnings("squid:S00116")
         static class ConsolidatedWeather {

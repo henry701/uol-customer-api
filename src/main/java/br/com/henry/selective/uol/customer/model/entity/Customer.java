@@ -1,6 +1,5 @@
 package br.com.henry.selective.uol.customer.model.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
@@ -13,7 +12,6 @@ import javax.validation.constraints.*;
 @Table(name = "customers")
 @DynamicUpdate
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Customer {
 

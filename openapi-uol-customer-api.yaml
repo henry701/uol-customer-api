@@ -1,0 +1,165 @@
+openapi: 3.0.0
+info:
+  title: UolApi
+  version: '1.0'
+  description: 'API simples para gerenciar clientes'
+  contact:
+    email: "henry_tuori@hotmail.com"
+    name: "Henrique Borsatto de Campos"
+    url: "https://github.com/henry701"
+  servers:
+    - url: http://{host}:{port}
+      variables:
+        host:
+          default: "127.0.0.1"
+        port:
+          default: "8085"
+paths:
+  /customer:
+    post:
+      summary: Create Customer
+      description: 'Cria um Cliente'
+      operationId: CreateCustomer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomerRequest'
+            example:
+              name: Henrique Borsatto de Campos
+              age: 21
+          required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        400: {}
+      deprecated: false
+    get:
+      summary: List Customers
+      description: 'Lista todos os clientes cadastrados'
+      operationId: ListCustomers
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerResponse'
+      deprecated: false
+    patch:
+      summary: Update Customer
+      description: 'Atualiza um cliente cadastrado. Atualiza somente os campos enviados, mantendo os ausentes intactos.'
+      operationId: UpdateCustomer
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCustomerRequest'
+            example:
+              id: 1
+              name: Henrique Borsatto de Campos
+              age: 22
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        404: {}
+      deprecated: false
+  /customer/{id}:
+    - name: id
+      in: query
+      description: 'ID do cliente'
+      required: true
+      schema:
+        type: integer
+        example: 1
+    delete:
+      summary: Delete Customer
+      description: 'Deleta permanentemente um cliente cadastrado'
+      operationId: DeleteCustomer
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        404: {}
+      deprecated: false
+    get:
+      summary: Retrieve Customer by Id
+      description: 'Busca um cliente pela sua ID'
+      operationId: RetrieveCustomerById
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        404: {}
+      deprecated: false
+components:
+  schemas:
+    CreateCustomerRequest:
+      title: CreateCustomerRequest
+      required:
+        - name
+        - age
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+          format: int32
+      example:
+        name: Henrique Borsatto de Campos
+        age: 21
+    UpdateCustomerRequest:
+      title: UpdateCustomerRequest
+      required:
+        - id
+        - name
+        - age
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        age:
+          type: integer
+          format: int32
+      example:
+        id: 1
+        name: Henrique Borsatto de Campos
+        age: 22
+    CustomerResponse:
+      title: CustomerResponse
+        required:
+          - id
+          - name
+          - age
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int32
+          name:
+            type: string
+          age:
+            type: integer
+            format: int32
+        example:
+          id: 1
+          name: Henrique Borsatto de Campos
+          age: 21
+tags: ["uol", "customer", "crud"]

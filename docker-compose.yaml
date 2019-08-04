@@ -20,6 +20,7 @@ services:
       dockerfile: ./DOCKERFILE
     ports:
       - "8085:8085"
+      - "5005:5005"
     depends_on:
       - postgres
       - redis
