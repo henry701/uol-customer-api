@@ -55,6 +55,11 @@ deste repositório: `postman_collection.json`.
 - Redis
     - Para realizar caching de entidades sem colocar pressão no Garbage Collector,
     e porque é um programa de caching robusto dedicado
+- Lombok
+    - Para evitar boilerplate de getters e setters em models. Caso o Spring tivesse Checked Exceptions
+    que não me interessasse e alguma interface de método não permitisse um throws eu poderia também ter
+    utilizado o @SneakyThrows invés de encapsular em um try-catch e re-jogar uma RuntimeException, mas não
+    foi necessário.
 
 ## Requisitos de Infraestrutura
 
@@ -70,6 +75,8 @@ deste repositório: `postman_collection.json`.
 Para compilar o programa é necessário possuir, no mínimo:
 - Maven 3.0
 - JDK 8.0
+- Uma IDE Java. Eu pessoalmente recomendo o IntelliJ.
+    - É desejável ter plugin de Lombok para essa IDE, para evitar erros pré-compilação
 
 ## Configuração
 
