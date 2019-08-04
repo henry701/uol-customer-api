@@ -34,11 +34,11 @@ public interface CustomerRepository extends CrudRepository<Customer, Long> {
     @Override
     void delete(Customer entity);
 
-    @CacheEvict(allEntries = true)
+    @CacheEvict(value = "customers", allEntries = true)
     @Override
     void deleteAll(Iterable<? extends Customer> entities);
 
-    @CacheEvict(allEntries = true)
+    @CacheEvict(value = "customers", allEntries = true)
     @Override
     void deleteAll();
 }
